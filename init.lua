@@ -120,6 +120,9 @@ end)
 
 -- Enable break indent
 vim.opt.breakindent = true
+vim.opt.autoindent = true
+
+vim.opt.wrap = false
 
 -- Save undo history
 vim.opt.undofile = true
@@ -228,10 +231,59 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 vim.o.termguicolors = true
+vim.cmd ' let g:netrw_liststyle = 3 '
+
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'iamcco/markdown-preview.nvim',
+  'christoomey/vim-tmux-navigator',
+  'norcalli/nvim-colorizer.lua',
+  'alvan/vim-closetag',
+  'Xuyuanp/nerdtree-git-plugin',
+  'tiagofumo/vim-nerdtree-syntax-highlight',
+  'airblade/vim-gitgutter',
+  'tpope/vim-obsession',
+
+  {
+    'rcarriga/nvim-notify',
+    config = function()
+      require('notify').setup {
+        background_colour = '#000000',
+        enabled = false,
+      }
+    end,
+  },
+
+  {
+    'folke/noice.nvim',
+    config = function()
+      require('noice').setup {
+        -- add any options here
+        routes = {
+          {
+            filter = {
+              event = 'msg_show',
+              any = {
+                { find = '%d+L, %d+B' },
+                { find = '; after #%d+' },
+                { find = '; before #%d+' },
+                { find = '%d fewer lines' },
+                { find = '%d more lines' },
+              },
+            },
+            opts = { skip = true },
+          },
+        },
+      }
+    end,
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      'MunifTanjim/nui.nvim',
+      'rcarriga/nvim-notify',
+    },
+  },
+
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -946,7 +998,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
