@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -122,7 +122,7 @@ end)
 vim.opt.breakindent = true
 vim.opt.autoindent = true
 
-vim.opt.wrap = false
+vim.opt.wrap = true
 
 -- Save undo history
 vim.opt.undofile = true
@@ -231,7 +231,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 vim.o.termguicolors = true
-vim.cmd ' let g:netrw_liststyle = 3 '
+vim.cmd ' let g:netrw_liststyle = 4 '
 
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -244,7 +244,23 @@ require('lazy').setup({
   'tiagofumo/vim-nerdtree-syntax-highlight',
   'airblade/vim-gitgutter',
   'tpope/vim-obsession',
-
+  {
+    'smoka7/multicursors.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvimtools/hydra.nvim',
+    },
+    opts = {},
+    cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+    keys = {
+      {
+        mode = { 'v', 'n' },
+        '<Leader>m',
+        '<cmd>MCstart<cr>',
+        desc = 'Create a selection for selected text or word under the cursor',
+      },
+    },
+  },
   {
     'rcarriga/nvim-notify',
     config = function()
@@ -254,7 +270,15 @@ require('lazy').setup({
       }
     end,
   },
-
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
   {
     'folke/noice.nvim',
     config = function()
@@ -660,12 +684,11 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        ltex = {},
         clangd = {},
-        gopls = {},
         pyright = {},
         rust_analyzer = {},
         texlab = {},
-        ltex = {},
         grammarly = {},
         awk_ls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -894,8 +917,13 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
+      vim.cmd.colorscheme 'tokyonight-moon'
+      -- vim.cmd [[
+      --   highlight Normal guibg=none
+      --   highlight NonText guibg=none
+      --   highlight Normal ctermbg=none
+      --   highlight NonText ctermbg=none
+      -- ]]
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
