@@ -2,13 +2,14 @@ require('obsidian').setup {
   workspaces = {
     {
       name = 'old vaults',
-      path = "D:/KELREY'S/Personal Vaults",
+      path = "D:/KELREY'S/Temporary Vaults",
     },
   },
 
   daily_notes = {
     folder = 'log/daily',
   },
+
   -- Optional, if you keep notes in a specific subdirectory of your vault.
   notes_subdir = 'vim_notes',
 

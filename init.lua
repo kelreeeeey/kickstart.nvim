@@ -159,6 +159,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+vim.opt.spelllang = { 'en,idn' }
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -240,8 +241,8 @@ require('lazy').setup({
   'christoomey/vim-tmux-navigator',
   'norcalli/nvim-colorizer.lua',
   'alvan/vim-closetag',
-  'Xuyuanp/nerdtree-git-plugin',
-  'tiagofumo/vim-nerdtree-syntax-highlight',
+  -- 'Xuyuanp/nerdtree-git-plugin',
+  -- 'tiagofumo/vim-nerdtree-syntax-highlight',
   'airblade/vim-gitgutter',
   'tpope/vim-obsession',
   {
@@ -321,6 +322,14 @@ require('lazy').setup({
   --
   -- See `:help gitsigns` to understand what the configuration keys do
   'folke/zen-mode.nvim',
+  {
+    'folke/twilight.nvim',
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
   'xiyaowong/nvim-transparent',
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -684,12 +693,17 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        ltex = {},
         clangd = {},
-        pyright = {},
+        pyright = {
+          settings = {
+            ltex = {
+              language = 'ind',
+            },
+          },
+        },
         rust_analyzer = {},
         texlab = {},
-        grammarly = {},
+        -- grammarly = {},
         awk_ls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -785,11 +799,19 @@ require('lazy').setup({
         python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
-
+  {
+    'lervag/vimtex',
+    lazy = false, -- we don't want to lazy load VimTeX
+    -- tag = "v2.15", -- uncomment to pin to a specific release
+    init = function()
+      -- VimTeX configuration goes here, e.g.
+      vim.g.vimtex_view_general_viewer = 'SumatraPDF'
+    end,
+  },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
@@ -917,7 +939,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-moon'
+      vim.cmd.colorscheme 'tokyonight-night'
       -- vim.cmd [[
       --   highlight Normal guibg=none
       --   highlight NonText guibg=none
